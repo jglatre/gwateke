@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<module rename-to='gwateke-tests'>
+<module rename-to='gwateke_tests'>
 
 	<inherits name='com.google.gwt.user.User'/>
 	<inherits name='gwtunit.Gwtunit'/>
+	<inherits name='com.github.gwateke.Gwateke'/>
 
 	<entry-point class='com.github.gwateke.client.AllTests'/>
 
