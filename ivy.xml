@@ -1,0 +1,6 @@
+<ivy-module version="2.0">
+    <info organisation="com.github" module="gwateke" revision="0.1.0" />
+    <dependencies>
+        <dependency org="com.github" name="gwtunit" rev="0.1.0" />
+    </dependencies>
+</ivy-module>
