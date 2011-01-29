@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module rename-to='gwateke-tests'>
+
+	<inherits name='com.google.gwt.user.User'/>
+	<inherits name='gwtunit.Gwtunit'/>
+
+	<entry-point class='com.github.gwateke.client.AllTests'/>
+
+	<source path='client'/>
+
+	<generate-with class="gwtunit.rebind.TestGenerator">
+		<when-type-assignable class="junit.framework.TestCase" />
+	</generate-with>
+
+</module>
