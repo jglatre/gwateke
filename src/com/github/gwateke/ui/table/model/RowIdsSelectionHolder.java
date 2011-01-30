@@ -6,12 +6,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.github.gwateke.core.closure.Closure;
 
@@ -23,7 +22,7 @@ import com.github.gwateke.core.closure.Closure;
  */
 public class RowIdsSelectionHolder<T> implements TableSelectionModel<T> {
 	
-	private final Log log = LogFactory.getLog(getClass());
+	private final Logger log = Logger.getLogger( getClass().getName() );
 
 	private final Closure<T, Integer> rowIdGetter;
 	private Map<Integer, T> selectedIds = new HashMap<Integer, T>();
@@ -73,7 +72,7 @@ public class RowIdsSelectionHolder<T> implements TableSelectionModel<T> {
 				changed = true;
 			}
 			else {
-				log.warn("No hay identificador para la posición absoluta: " + i);
+				log.log(Level.WARNING, "No identifier at absolute position: " + i);
 			}
 		}
 		if (changed) {

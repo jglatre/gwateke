@@ -15,8 +15,7 @@
  */
 package com.github.gwateke.binding.value.support;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 
 
@@ -29,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ValueHolder<T> extends AbstractValueModel<T> {
     
-	protected static final Log log = LogFactory.getLog(ValueHolder.class);
+	protected static final Logger log = Logger.getLogger(ValueHolder.class.getName());
 	
     private T value;
     
@@ -58,7 +57,7 @@ public class ValueHolder<T> extends AbstractValueModel<T> {
     public void setValue(T value) {
         if (hasValueChanged(this.value, value)) {
             T oldValue = this.value;
-            log.debug("[ValueHolder] Setting held value from '" + oldValue + "' to '" + value + "'");
+            log.fine("[ValueHolder] Setting held value from '" + oldValue + "' to '" + value + "'");
             this.value = value;
             fireValueChange(oldValue, this.value);
         }

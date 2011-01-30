@@ -4,6 +4,7 @@
 package com.github.gwateke.binding.value.support;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,7 +19,7 @@ import com.github.gwateke.binding.value.ValueModel;
  */
 public class MapKeyAdapter<K,V> extends AbstractValueModel<V> {
 
-	protected static final Log log = LogFactory.getLog(MapKeyAdapter.class);
+	protected static final Logger logger = Logger.getLogger(MapKeyAdapter.class.getName());
 	
     private ValueModel<Map<K,V>> mapValueModel;
     private K key;
@@ -53,7 +54,7 @@ public class MapKeyAdapter<K,V> extends AbstractValueModel<V> {
         
         V oldValue = get(map, key);
         if (hasValueChanged(oldValue, value)) {
-        	log.debug("MapKeyAdapter for " + key + ": setting value from '" + oldValue + "' to '" + value + "'", null);
+        	logger.fine("MapKeyAdapter for " + key + ": setting value from '" + oldValue + "' to '" + value + "'");
         	put(map, key, value);
         	fireValueChange(oldValue, value);
         }

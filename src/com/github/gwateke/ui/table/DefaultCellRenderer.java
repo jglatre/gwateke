@@ -2,8 +2,8 @@ package com.github.gwateke.ui.table;
 
 import static com.google.gwt.user.client.ui.HasHorizontalAlignment.ALIGN_RIGHT;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.github.gwateke.binding.convert.ConversionService;
 import com.github.gwateke.binding.convert.support.DefaultConversionService;
@@ -17,7 +17,7 @@ public class DefaultCellRenderer implements TableCellRenderer {
 		
 	private static final ConversionService conversionService = new DefaultConversionService();
 
-	protected final Log log = LogFactory.getLog(getClass());
+	protected final Logger log = Logger.getLogger( getClass().getName() );
 
 	
 	public Widget render(HTMLTable table, Object value, int row, int column) {
@@ -43,7 +43,7 @@ public class DefaultCellRenderer implements TableCellRenderer {
 			//TODO fijar converter en el constructor
 			Closure converter = conversionService.getConversionClosure(value.getClass(), String.class);
 			if (converter == null) {
-				log.warn("No converter for " + value.getClass().getName());
+				log.log( Level.WARNING, "No converter for " + value.getClass().getName() );
 				return String.valueOf(value);
 			}
 			

@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,7 +32,7 @@ import com.github.gwateke.core.closure.Closure;
 
 public class DefaultFormModel<B> extends AbstractPropertyChangePublisher implements ConfigurableFormModel<B> {
     
-	private final Log log = LogFactory.getLog(getClass());
+	private final Logger log = Logger.getLogger( getClass().getName() );
 	
 	private String id;
 	private ValueModel<B> formObjectHolder;
@@ -139,7 +141,7 @@ public class DefaultFormModel<B> extends AbstractPropertyChangePublisher impleme
         	return add(propertyName, createValueModel(propertyName));
     	}
     	else {
-    		log.debug("rejected property " + propertyName);
+    		log.fine("rejected property " + propertyName);
     		return null;
     	}
     }
@@ -180,12 +182,12 @@ public class DefaultFormModel<B> extends AbstractPropertyChangePublisher impleme
     
     
     public void commit() {
-		if (log.isDebugEnabled()) {
-			log.debug("[DefaultFormModel] Commit requested for this form model " + this);
+		if (log.isLoggable(Level.FINE)) {
+			log.fine("[DefaultFormModel] Commit requested for this form model " + this);
 		}
         
         if (getFormObject() == null) {
-        	log.debug("[DefaultFormModel] Form object is null; nothing to commit.");
+        	log.fine("[DefaultFormModel] Form object is null; nothing to commit.");
             return;
         }
         
@@ -304,8 +306,8 @@ public class DefaultFormModel<B> extends AbstractPropertyChangePublisher impleme
         	sourceClass = Object.class.getName();
         }
         
-		if (log.isDebugEnabled()) {
-			log.debug("Creating converting value model for form property '" + formProperty
+		if (log.isLoggable(Level.FINE)) {
+			log.fine("Creating converting value model for form property '" + formProperty
                 + "' converting from type '" + sourceClass + "' to type '" + targetClass + "'.");
 		}
     	

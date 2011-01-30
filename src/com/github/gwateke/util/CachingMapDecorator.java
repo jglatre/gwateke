@@ -19,9 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 
 /**
@@ -37,7 +35,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public abstract class CachingMapDecorator<K, V> implements Map<K, V> {
 	
-	protected static final Log log = LogFactory.getLog(CachingMapDecorator.class);
+	protected static final Logger log = Logger.getLogger(CachingMapDecorator.class.getName());
 	
 //	private static Object NULL_VALUE = new Object();
 
@@ -123,7 +121,7 @@ public abstract class CachingMapDecorator<K, V> implements Map<K, V> {
 	public V get(Object key) {
 		V value = this.targetMap.get(key);
 		if (value == null) {
-			log.debug("Creating new expensive value for key '" + key + "'");
+			log.fine("Creating new expensive value for key '" + key + "'");
 			
 			value = create(key);
 			
@@ -131,12 +129,12 @@ public abstract class CachingMapDecorator<K, V> implements Map<K, V> {
 //				value = NULL_VALUE;
 //			}
 			
-			log.debug("Caching expensive value: " + value);
+			log.fine("Caching expensive value: " + value);
 		
 			put((K) key, value);
 		}
 		else {
-			log.debug("For key '" + key + "', returning cached value: " + value);
+			log.fine("For key '" + key + "', returning cached value: " + value);
 		}
 		return value;
 //		return (value == NULL_VALUE) ? null : value;

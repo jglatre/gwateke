@@ -17,9 +17,7 @@ package com.github.gwateke.binding.value.support;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import com.github.gwateke.binding.value.ValueChangeDetector;
 import com.github.gwateke.binding.value.ValueModel;
@@ -40,7 +38,7 @@ import com.github.gwateke.binding.value.ValueModel;
  */
 public abstract class AbstractValueModel<T> extends AbstractPropertyChangePublisher implements ValueModel<T> {
 
-	protected static final Log log = LogFactory.getLog(AbstractValueModel.class);
+	protected static final Logger log = Logger.getLogger(AbstractValueModel.class.getName());
 	
     private ValueChangeDetector valueChangeDetector;
 
@@ -152,7 +150,7 @@ public abstract class AbstractValueModel<T> extends AbstractPropertyChangePublis
      * between the old and new value unlike the various fireValueChanged() methods.
      */
     protected void fireValueChangeEvent(Object oldValue, Object newValue) {
-        log.debug("[AbstractValueModel] Firing value changed event. Old value='" + oldValue + "' new value='" + newValue + "'");
+        log.fine("[AbstractValueModel] Firing value changed event. Old value='" + oldValue + "' new value='" + newValue + "'");
  
         final PropertyChangeListener[] propertyChangeListeners = getPropertyChangeListeners(VALUE_PROPERTY);
         if (propertyChangeListeners.length > 0) {

@@ -17,9 +17,7 @@ import static com.google.gwt.event.dom.client.KeyCodes.KEY_UP;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
@@ -31,7 +29,7 @@ import com.google.gwt.user.client.ui.TextBoxBase;
 
 public abstract class KeyboardFilter implements KeyDownHandler, KeyPressHandler {
 
-	protected final Log log = LogFactory.getLog(getClass());
+	protected final Logger logger = Logger.getLogger( getClass().getName() );
 
 	private static final Set<Integer> CONTROL_KEYS = new HashSet<Integer>( Arrays.asList(new Integer[] { 
 			KEY_BACKSPACE, KEY_DELETE, KEY_DOWN, KEY_END, KEY_ENTER, KEY_ESCAPE, KEY_HOME, KEY_LEFT, 

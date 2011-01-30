@@ -19,9 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.github.gwateke.command.AbstractCommand;
 import com.github.gwateke.command.ActionCommand;
@@ -38,7 +37,7 @@ import com.github.gwateke.util.ObjectUtils;
  */
 public class DefaultCommandRegistry implements CommandRegistry, CommandRegistryListener {
 	
-    protected final Log logger = LogFactory.getLog(getClass());
+    protected final Logger logger = Logger.getLogger(getClass().getName());
 
     private List<CommandRegistryListener> commandRegistryListeners;
     private Map<String, AbstractCommand> commandRegistry = new HashMap<String, AbstractCommand>();
@@ -80,7 +79,7 @@ public class DefaultCommandRegistry implements CommandRegistry, CommandRegistryL
             }
         }
         if (command == null) {
-            logger.warn("No action command with id '" + commandId + "' exists in registry; returning null");
+            logger.log(Level.WARNING, "No action command with id '" + commandId + "' exists in registry; returning null");
         }
         return command;
     }
@@ -126,8 +125,8 @@ public class DefaultCommandRegistry implements CommandRegistry, CommandRegistryL
     	assert command.getId() != null : "A command must have an identifier to be placed in a registry.";
     	
         if (containsActionCommand(command.getId())) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("This command registry already contains a command with id '" + command.getId()
+            if (logger.isLoggable(Level.WARNING)) {
+                logger.log(Level.WARNING, "This command registry already contains a command with id '" + command.getId()
                         + "'; will overwrite...");
             }
         }
@@ -135,8 +134,8 @@ public class DefaultCommandRegistry implements CommandRegistry, CommandRegistryL
 //        if (command instanceof CommandGroup) {
 //            ((CommandGroup)command).setCommandRegistry(this);
 //        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Command registered '" + command.getId() + "'");
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("Command registered '" + command.getId() + "'");
         }
         fireCommandRegistered(command);
     }
@@ -174,8 +173,8 @@ public class DefaultCommandRegistry implements CommandRegistry, CommandRegistryL
         if (commandRegistryListeners == null) {
             commandRegistryListeners = new ArrayList<CommandRegistryListener>();
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Adding command registry listener " + l);
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("Adding command registry listener " + l);
         }
         commandRegistryListeners.add(l);
     }
@@ -184,8 +183,8 @@ public class DefaultCommandRegistry implements CommandRegistry, CommandRegistryL
     public void removeCommandRegistryListener(CommandRegistryListener l) {
     	assert commandRegistryListeners != null : "Listenerlist not yet created; add a listener first!";
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Removing command registry listener " + l);
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("Removing command registry listener " + l);
         }
         commandRegistryListeners.remove(l);
     }

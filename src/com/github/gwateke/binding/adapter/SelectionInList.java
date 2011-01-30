@@ -3,9 +3,8 @@ package com.github.gwateke.binding.adapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.github.gwateke.binding.value.ValueModel;
 import com.github.gwateke.binding.value.support.ValueHolder;
@@ -13,7 +12,7 @@ import com.github.gwateke.binding.value.support.ValueHolder;
 
 public class SelectionInList<T> {
 	
-	private Log log = LogFactory.getLog(getClass());
+	private Logger log = Logger.getLogger( getClass().getName() );
 
 	private static final int NO_SELECTION_INDEX = -1;
 	
@@ -37,8 +36,8 @@ public class SelectionInList<T> {
 		this.selectionHolder.addValueChangeListener(selectionChangeHandler);
 		this.selectionIndexHolder.addValueChangeListener(selectionIndexChangeHandler);
 		
-		if (log.isDebugEnabled()) {
-			log.debug("[SelectionInList] initialized, selection " + this.selectionHolder + ", index " + this.selectionIndexHolder);
+		if (log.isLoggable(Level.FINE)) {
+			log.fine("[SelectionInList] initialized, selection " + this.selectionHolder + ", index " + this.selectionIndexHolder);
 		}
 	}
 	
@@ -64,8 +63,8 @@ public class SelectionInList<T> {
 			Object newSelection = evt.getNewValue();
 			int newIndex = listItems.indexOf(newSelection);
 			
-			if (log.isDebugEnabled()) {
-				log.debug("[SelectionInList] selection changed, new index: " + newIndex);
+			if (log.isLoggable(Level.FINE)) {
+				log.fine("[SelectionInList] selection changed, new index: " + newIndex);
 			}
 			
 			selectionIndexHolder.removeValueChangeListener(selectionIndexChangeHandler);
@@ -80,8 +79,8 @@ public class SelectionInList<T> {
 			int newIndex = (Integer) evt.getNewValue();
 			T newSelection = getSafeElementAt(newIndex);	
 			
-			if (log.isDebugEnabled()) {
-				log.debug("[SelectionInList] index changed, new selection: " + newSelection);
+			if (log.isLoggable(Level.FINE)) {
+				log.fine("[SelectionInList] index changed, new selection: " + newSelection);
 			}
 
 			selectionHolder.removeValueChangeListener(selectionChangeHandler);

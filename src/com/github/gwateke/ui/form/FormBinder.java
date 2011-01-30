@@ -3,9 +3,7 @@ package com.github.gwateke.ui.form;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import com.github.gwateke.binding.Binding;
 import com.github.gwateke.binding.adapter.Bindings;
@@ -33,7 +31,7 @@ import com.google.gwt.user.datepicker.client.DateBox;
 
 public class FormBinder implements FieldVisitor {
 
-	protected final Log log = LogFactory.getLog(getClass());
+	protected final Logger log = Logger.getLogger( getClass().getName() );
 	
 	private Map<String, Binding<?>> bindings = new HashMap<String, Binding<?>>();
 	private FormModel<?> formModel;
@@ -52,7 +50,7 @@ public class FormBinder implements FieldVisitor {
 			if (formModel.hasValueModel(name)) {
 				Binding<?> binding = bind(name, field);
 				if (binding != null) {
-					log.debug(name + " bound");
+					log.fine(name + " bound");
 					bindings.put( name, binding );
 				}
 			}

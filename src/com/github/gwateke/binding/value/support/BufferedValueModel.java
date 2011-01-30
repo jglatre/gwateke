@@ -17,9 +17,7 @@ package com.github.gwateke.binding.value.support;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import com.github.gwateke.binding.value.CommitTrigger;
 import com.github.gwateke.binding.value.CommitTriggerListener;
@@ -39,7 +37,7 @@ import com.github.gwateke.binding.value.ValueModel;
  */
 public class BufferedValueModel<T> extends AbstractValueModel<T> implements ValueModelWrapper<T> {
 
-	protected static final Log log = LogFactory.getLog(BufferedValueModel.class);
+	protected static final Logger log = Logger.getLogger(BufferedValueModel.class.getName());
 	
     /**
      * Name of the bound property <em>buffering</em>.
@@ -143,7 +141,7 @@ public class BufferedValueModel<T> extends AbstractValueModel<T> implements Valu
      * @param value  the value to be buffered
      */
     public void setValue(T value) {
-        log.debug("[BufferedValueModel] Setting buffered value to '" + value + "'");
+        log.fine("[BufferedValueModel] Setting buffered value to '" + value + "'");
 
         final Object oldValue = getValue();
         this.bufferedValue = value;
@@ -182,7 +180,7 @@ public class BufferedValueModel<T> extends AbstractValueModel<T> implements Valu
      * Called when the value held by the wrapped value model changes.
      */
     protected void onWrappedValueChanged() {
-    	log.debug("[BufferedValueModel] Wrapped model value has changed; new value is '" + wrappedModel.getValue() + "'");
+    	log.fine("[BufferedValueModel] Wrapped model value has changed; new value is '" + wrappedModel.getValue() + "'");
        
         setValue(wrappedModel.getValue());
     }
@@ -193,14 +191,14 @@ public class BufferedValueModel<T> extends AbstractValueModel<T> implements Valu
      */
     public void commit() {
         if (isBuffering()) {
-        	log.debug("[BufferedValueModel] Committing buffered value '" + getValue() + "' to wrapped value model '" + 
+        	log.fine("[BufferedValueModel] Committing buffered value '" + getValue() + "' to wrapped value model '" + 
         			wrappedModel + "'");
       
             wrappedModel.setValueSilently(getValueToCommit(), wrappedModelChangeHandler);
             setValue(wrappedModel.getValue()); // check if the wrapped model changed the committed value
         }
         else {
-        	log.debug("[BufferedValueModel] No buffered edit to commit; nothing to do...");
+        	log.fine("[BufferedValueModel] No buffered edit to commit; nothing to do...");
         }
     }
 
@@ -230,12 +228,12 @@ public class BufferedValueModel<T> extends AbstractValueModel<T> implements Valu
     	updateBuffering();   // TODO explicar
     	
         if (isBuffering()) {
-        	log.debug("[BufferedValueModel] Reverting buffered value '" + getValue() + "' to value '" + 
+        	log.fine("[BufferedValueModel] Reverting buffered value '" + getValue() + "' to value '" + 
         			wrappedModel.getValue() + "'");
             setValue(wrappedModel.getValue());
         }
         else {
-        	log.debug("[BufferedValueModel] No buffered edit to commit; nothing to do...");
+        	log.fine("[BufferedValueModel] No buffered edit to commit; nothing to do...");
         }
     }
 
@@ -257,12 +255,12 @@ public class BufferedValueModel<T> extends AbstractValueModel<T> implements Valu
      */
     private class CommitTriggerHandler implements CommitTriggerListener {
         public void commit() {
-        	log.debug("[BufferedValueModel] Commit trigger fired commit event.");
+        	log.fine("[BufferedValueModel] Commit trigger fired commit event.");
             BufferedValueModel.this.commit();
         }
 
         public void revert() {
-        	log.debug("[BufferedValueModel] Commit trigger fired revert event.");
+        	log.fine("[BufferedValueModel] Commit trigger fired revert event.");
             BufferedValueModel.this.revert();
         }
     }

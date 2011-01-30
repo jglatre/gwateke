@@ -1,11 +1,10 @@
 package com.github.gwateke.binding.adapter;
 
+import java.util.logging.Logger;
+
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.github.gwateke.binding.value.ValueModel;
 import com.github.gwateke.binding.value.support.AbstractValueModelAdapter;
@@ -17,7 +16,7 @@ import com.github.gwateke.binding.value.support.AbstractValueModelAdapter;
  */
 public class RowSelectionBinding extends AbstractValueModelAdapter<Boolean> implements ListSelectionListener {
 	
-	private final Log log = LogFactory.getLog(getClass());
+	private final Logger log = Logger.getLogger( getClass().getName() );
 	
 	private ListSelectionModel selectionModel;
 	
@@ -40,9 +39,8 @@ public class RowSelectionBinding extends AbstractValueModelAdapter<Boolean> impl
 	}		
 
 	
-	protected void valueModelValueChanged(Boolean newValue) {
-		
-		log.debug("valueModelValueChanged " + row + " " + this);
+	protected void valueModelValueChanged(Boolean newValue) {		
+		log.fine("valueModelValueChanged " + row + " " + this);
 		
 		if (newValue) {
 			selectionModel.addSelectionInterval(row, row);
