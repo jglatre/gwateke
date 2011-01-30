@@ -1,0 +1,16 @@
+<module>
+    <inherits name='com.google.gwt.user.User' />
+    <inherits name='com.google.gwt.json.JSON'/>
+    <inherits name='Emulation'/>
+    <!-- inherits name='org.apache.commons.Logging'/-->
+
+    <source path='binding'/>
+    <source path='command'/>
+    <source path='context'/>
+    <source path='core'/>
+    <source path='io'/>
+    <source path='rpc'/>
+    <source path='text'/>
+    <source path='ui'/>
+    <source path='util'/>
+</module>
