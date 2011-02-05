@@ -60,11 +60,11 @@ public abstract class JSONUtil {
 	}
 
 
-	public static List<?> toJavaList(JSONArray jsonArray) {
-		List<Object> list = new ArrayList<Object>();
+	public static <T> List<T> toJavaList(JSONArray jsonArray) {
+		List<T> list = new ArrayList<T>();
 		
 		for (int i = 0; i < jsonArray.size(); i++) {
-			list.add( toJavaValue( jsonArray.get(i) ) );
+			list.add( JSONUtil.<T>toJavaValue( jsonArray.get(i) ) );
 		}
 		
 		return list;
