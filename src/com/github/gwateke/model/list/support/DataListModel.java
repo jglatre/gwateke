@@ -10,7 +10,8 @@ import com.github.gwateke.data.DataSource.Callback;
 import com.github.gwateke.data.query.Criterion;
 import com.github.gwateke.data.query.Properties;
 import com.github.gwateke.data.query.Query;
-import com.github.gwateke.model.list.event.ListModelListener;
+import com.github.gwateke.model.list.event.ListModelChangeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 
 
@@ -102,14 +103,23 @@ public class DataListModel<T> extends AbstractListModel<Object, String> {
 		}		
 	}
 	
-	
-	public void addListener(ListModelListener listener) {
-		super.addListener(listener);
+
+	public HandlerRegistration addChangeHandler(ListModelChangeHandler handler) {
+		HandlerRegistration registration = super.addChangeHandler(handler);
 		
 		if (elements == null) {
 			refresh();
 		}
+		return registration;
 	}
+	
+//	public void addListener(ListModelListener listener) {
+//		super.addListener(listener);
+//		
+//		if (elements == null) {
+//			refresh();
+//		}
+//	}
 	
 	
 	public Properties getProperties() {

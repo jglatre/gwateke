@@ -5,8 +5,9 @@ import java.util.List;
 
 import com.github.gwateke.binding.Binding;
 import com.github.gwateke.binding.value.ValueModel;
-import com.github.gwateke.ui.list.model.ListModel;
-import com.github.gwateke.ui.list.model.ListModelListener;
+import com.github.gwateke.model.list.ListModel;
+import com.github.gwateke.model.list.event.ListModelChangeEvent;
+import com.github.gwateke.model.list.event.ListModelChangeHandler;
 import com.google.gwt.user.client.ui.ListBox;
 
 
@@ -16,14 +17,14 @@ public class ListBoxBinding implements Binding<ListBox> {
 	private ValueModel<Object> selectionHolder;
 	private SelectionInList<Object> selectionInList;
 	private Binding<ListBox> indexBinding;
-	private ListModelListener listChangeHandler = new ListChangeHandler();
+	private DataChangeHandler dataChangeHandler = new DataChangeHandler();
 	
 	
 	@SuppressWarnings("unchecked")
 	public ListBoxBinding(ListBox listBox, ValueModel<?> selectionHolder, ListModel<?, ?> model) {
 		this.listBox = listBox;
 		this.selectionHolder = (ValueModel<Object>) selectionHolder;
-		model.addListener( listChangeHandler );
+		model.addChangeHandler( dataChangeHandler );
 
 		if (model.getSize() > 0) {
 			initialize(model);
@@ -54,10 +55,10 @@ public class ListBoxBinding implements Binding<ListBox> {
 
 	//---------------------------------------------------------------
 
-	private class ListChangeHandler implements ListModelListener {
-		public void onDataChanged(ListModel<?, ?> model) {
+	private class DataChangeHandler implements ListModelChangeHandler {
+		public void onChange(ListModelChangeEvent event) {
 			unbind();
-			initialize(model);
+			initialize( (ListModel<?, ?>) event.getSource() );
 		}					
 	}
 	
@@ -67,9 +68,6 @@ public class ListBoxBinding implements Binding<ListBox> {
 		for (int i = 0; i < model.getSize(); i++) {
 			listBox.addItem( String.valueOf(model.getElementAt(i)) );
 		}
-//		for (Iterator it = items.iterator(); it.hasNext();) {
-//			listBox.addItem( String.valueOf(it.next()) );			
-//		}
 	}
 	
 	
