@@ -2,10 +2,10 @@ package com.github.gwateke.ui.list;
 
 import java.util.Map;
 
+import com.github.gwateke.model.list.ListModel;
+import com.github.gwateke.model.list.ListModelDependent;
+import com.github.gwateke.model.list.support.ListUtils;
 import com.github.gwateke.ui.NamedLabel;
-import com.github.gwateke.ui.list.model.ListModel;
-import com.github.gwateke.ui.list.model.ListModelDependent;
-import com.github.gwateke.ui.list.model.ListUtils;
 
 
 
