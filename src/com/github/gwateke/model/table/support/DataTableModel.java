@@ -96,7 +96,7 @@ public class DataTableModel<T> implements TableModel<T> {
     	}    	
     	
     	propertiesWithId = new Properties();
-    	propertiesWithId.add("id");
+    	propertiesWithId.add("id");  //TODO use FieldMetadata.isIdentity()
     	propertiesWithId.addAll(properties);
     }
     
@@ -108,6 +108,12 @@ public class DataTableModel<T> implements TableModel<T> {
     
     public void setBaseFilter(Criterion baseFilter) {
     	this.baseFilter = baseFilter;
+    }
+    
+    
+    public Object getCellValue(int row, int column) {
+    	String columnId = getTableColumn(column).getId();
+    	return dataSource.getPropertyAccessor( getRowValue(row) ).get( columnId );
     }
     
 
