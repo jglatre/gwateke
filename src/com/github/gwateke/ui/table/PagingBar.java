@@ -7,11 +7,11 @@ import javax.swing.event.ListSelectionListener;
 
 import com.github.gwateke.context.Images;
 import com.github.gwateke.context.MessageSource;
+import com.github.gwateke.model.table.TableModel;
+import com.github.gwateke.model.table.event.TableModelListener;
+import com.github.gwateke.model.table.support.RowIdsSelectionHolder;
 import com.github.gwateke.ui.Toolbar;
 import com.github.gwateke.ui.ToolbarButton;
-import com.github.gwateke.ui.table.model.RowIdsSelectionHolder;
-import com.github.gwateke.ui.table.model.TableModel;
-import com.github.gwateke.ui.table.model.TableModelListener;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;

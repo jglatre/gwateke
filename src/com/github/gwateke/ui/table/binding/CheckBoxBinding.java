@@ -4,7 +4,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.github.gwateke.binding.Binding;
-import com.github.gwateke.ui.table.model.TableSelectionModel;
+import com.github.gwateke.model.table.TableSelectionModel;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;

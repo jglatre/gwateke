@@ -4,7 +4,7 @@ import java.util.MissingResourceException;
 
 import com.github.gwateke.context.Images;
 import com.github.gwateke.context.MessageSource;
-import com.github.gwateke.ui.table.model.TableColumn;
+import com.github.gwateke.model.table.TableColumn;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
