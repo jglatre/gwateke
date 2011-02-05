@@ -1,8 +1,6 @@
 package com.github.gwateke.data.metadata;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import com.google.gwt.core.client.JavaScriptObject;
 
 
 /**
@@ -10,88 +8,83 @@ import java.util.Map;
  * 
  * @author juanjo
  */
-public class FieldMetadata {
-
-	private Map<String, Object> metadata;
+public class FieldMetadata extends JavaScriptObject {
+	
+	protected FieldMetadata() {}
 	
 	
-	public FieldMetadata(Map<String, Object> metadata) {
-		this.metadata = metadata;
-	}
+	public final native String getName() /*-{
+		return this.name;
+	}-*/;
 	
 	
-	public String getName() {
-		return (String) metadata.get("name");
-	}
+	public final native String getType() /*-{
+		return this.type;
+	}-*/;
 	
 	
-	public String getType() {
-		return (String) metadata.get("type");
-	}
+	public final native boolean isPersistent() /*-{
+		return this.persistent;
+	}-*/;
 	
 	
-	public boolean isPersistent() {
-		return (Boolean) metadata.get("persistent");
-	}
+	public final native boolean isOptional() /*-{
+		return this.optional;
+	}-*/;
 	
 	
-	public boolean isOptional() {
-		return (Boolean) metadata.get("optional");
-	}
+	public final native boolean isIdentity() /*-{
+		return this.identity;
+	}-*/;
 	
 	
-	public boolean isIdentity() {
-		return (Boolean) metadata.get("identity");
-	}
+	public final native boolean isOneToMany() /*-{
+		return this.oneToMany;
+	}-*/;
 	
 	
-	public boolean isOneToMany() {
-		return (Boolean) metadata.get("oneToMany");
-	}
+	public final native boolean isManyToOne() /*-{
+		return this.manyToOne;	
+	}-*/;
 	
 	
-	public boolean isManyToOne() {
-		return (Boolean) metadata.get("manyToOne");	
-	}
+	public final native boolean isOneToOne() /*-{
+		return this.oneToOne;	
+	}-*/;
 	
 	
-	public boolean isOneToOne() {
-		return (Boolean) metadata.get("oneToOne");	
-	}
+	public final native boolean isAssociation() /*-{
+		return this.association;
+	}-*/;
 	
 	
-	public boolean isAssociation() {
-		return (Boolean) metadata.get("association");
-	}
-	
-	
-	public String getReferencedType() {
-		return (String) metadata.get("referencedType");		
-	}
+	public final native String getReferencedType() /*-{
+		return this.referencedType;		
+	}-*/;
 		
 	
-	public List<?> getInList() {
-		return (List<?>) metadata.get("inList");
-	}
+//	public List<?> getInList() {
+//		return (List<?>) metadata.get("inList");
+//	}
 
 
-	public int getMinSize() {
-		return (Integer) metadata.get("minSize");
-	}
+	public final native int getMinSize() /*-{
+		return this.minSize;
+	}-*/;
 
 	
-	public int getMaxSize() {
-		return (Integer) metadata.get("maxSize");
-	}
+	public final native int getMaxSize() /*-{
+		return this.maxSize;
+	}-*/;
 	
 	
-	public FieldMetadata set(String name, Object value) {
-		metadata.put(name, value);
+	public final native FieldMetadata set(String name, Object value) /*-{
+		this[ name ] = value;
 		return this;
-	}
+	}-*/;
 
 	
-	public Map<String, ?> toMap() {
-		return Collections.unmodifiableMap(metadata);
-	}
+//	public Map<String, ?> toMap() {
+//		return Collections.unmodifiableMap(metadata);
+//	}
 }
