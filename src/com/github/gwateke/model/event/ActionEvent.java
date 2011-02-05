@@ -4,6 +4,11 @@ import com.github.gwateke.command.ActionCommand;
 import com.google.gwt.event.shared.GwtEvent;
 
 
+/**
+ * Event fired by <code>ManagementModel</code> when an <code>ActionCommand</code> is executed.
+ * 
+ * @author juanjo
+ */
 public class ActionEvent extends GwtEvent<ActionHandler> {
 
 	private static final Type<ActionHandler> TYPE = new Type<ActionHandler>();
