@@ -13,9 +13,8 @@ import javax.swing.event.ListSelectionListener;
 
 import com.github.gwateke.binding.Binding;
 import com.github.gwateke.binding.value.ValueModel;
-import com.github.gwateke.context.Images;
-import com.github.gwateke.context.MessageSource;
 import com.github.gwateke.context.MessageSourceAware;
+import com.github.gwateke.context.UiContext;
 import com.github.gwateke.core.closure.Closure;
 import com.github.gwateke.data.query.Order;
 import com.github.gwateke.model.table.TableColumn;
@@ -55,17 +54,15 @@ public class Table extends Composite implements TableModelListener {
 	private TableSelectionModel<?> selectionModel;
 	private List<Binding<?>> bindings = new ArrayList<Binding<?>>();
 	private Map<String, TableCellRenderer> columnRenderers = new HashMap<String, TableCellRenderer>();
-	private MessageSource messageSource;
-	private Images images;
+	private UiContext uiContext;
 	private RowHighlighter rowHighlighter = new RowHighlighter();
 	private Closure<String, Object> rowTooltipBuilder;
 	private Map<Integer, String> rowTooltipCache = new HashMap<Integer, String>();
 	private int oldPageSize = 0;
 	
 	
-	public Table(MessageSource messageSource, Images images) {
-		this.messageSource = messageSource;
-		this.images = images;
+	public Table(UiContext uiContext) {
+		this.uiContext = uiContext;
 		
 		table.setCellPadding(0);
 		table.setCellSpacing(0);
@@ -139,7 +136,7 @@ public class Table extends Composite implements TableModelListener {
 			((TableModelAware) renderer).setTableModel(model);
 		}
 		if (renderer instanceof MessageSourceAware) {
-			((MessageSourceAware) renderer).setMessageSource(messageSource);
+			((MessageSourceAware) renderer).setMessageSource( uiContext.getMessageSource() );
 		}
 		columnRenderers.put(column, renderer);
 	}
@@ -151,7 +148,7 @@ public class Table extends Composite implements TableModelListener {
 		
 		// crear cabeceras columna
 		if (selectionModel != null) {
-			selectionMenu = new RowSelectionMenu(messageSource, images);
+			selectionMenu = new RowSelectionMenu( uiContext );
 			selectionMenu.setSelectionModel(selectionModel);
 			selectionMenu.setTableModel(model);
 			table.setWidget(0, 0, selectionMenu);
@@ -161,7 +158,7 @@ public class Table extends Composite implements TableModelListener {
 		
 		for (int i = 0; i < model.getColumnCount(); i++) {
 			TableColumn column = model.getTableColumn(i);
-			ColumnHeader header = new ColumnHeader( column, messageSource, images );			
+			ColumnHeader header = new ColumnHeader( column, uiContext );			
 			if (column.isSortable()) {
 				new ColumnHeaderOrderAdapter(header, orderModel);
 			}
