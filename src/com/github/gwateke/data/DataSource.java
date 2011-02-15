@@ -4,33 +4,32 @@ import java.util.List;
 
 import com.github.gwateke.data.query.Properties;
 import com.github.gwateke.data.query.Query;
-import com.github.gwateke.ui.list.model.ListModel;
+import com.github.gwateke.model.list.ListModel;
 
 
 
 /**
  * @author juanjogarcia
  *
- * @param <T> tipo de entidad.
- * @param <I> tipo de identificador.
- * @param <E> tipo de error.
+ * @param <T> domain object type.
+ * @param <I> id type.
+ * @param <E> error type.
  */
-public interface DataSource<T, I, E> {
+public interface DataSource<T, I> {
 
 	String getDomainClassName();
+	I getNullId();
+	PropertyAccessor<T, I> getPropertyAccessor(T entity);
 	ListModel<?, ?> createListModel(String detailType);
 	void load(I id, Properties properties, Callback<T> callback);
-	void save(T entity, FallibleCallback<?, List<E>> callback);
-	void delete(I[] ids, FallibleCallback<?, List<E>> callback);
-	<R> void invoke(String method, I[] ids, List<Object> args, FallibleCallback<R, List<E>> callback);
+	void save(T entity, Callback<?> callback);
+	void delete(I[] ids, Callback<?> callback);
+	<R> void invoke(String method, I[] ids, List<Object> args, Callback<R> callback);
 	void list(Query query, Properties properties, Callback<List<T>> callback);
 	void count(Query query, Callback<Integer> callback);
 	
 	interface Callback<R> {
-		void onSuccess(R result);
+		void onSuccess(R result, List<DataError> errors);
 	}
 
-	interface FallibleCallback<R, F> extends Callback<R> {
-		void onFailure(F failure);
-	}
 }
