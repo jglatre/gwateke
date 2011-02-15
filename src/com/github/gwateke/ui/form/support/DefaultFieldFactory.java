@@ -8,7 +8,6 @@ import java.util.MissingResourceException;
 import com.github.gwateke.binding.form.FieldMetadata;
 import com.github.gwateke.context.MessageSource;
 import com.github.gwateke.ui.RadioButtonGroup;
-import com.github.gwateke.ui.form.BindableDateBox;
 import com.github.gwateke.ui.form.FieldFactory;
 import com.github.gwateke.ui.form.KeyboardFilter;
 import com.google.gwt.i18n.client.DateTimeFormat;

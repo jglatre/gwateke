@@ -1,4 +1,4 @@
-package com.github.gwateke.ui.form;
+package com.github.gwateke.ui.form.support;
 
 import com.google.gwt.event.dom.client.HasAllKeyHandlers;
 import com.google.gwt.event.dom.client.KeyDownHandler;

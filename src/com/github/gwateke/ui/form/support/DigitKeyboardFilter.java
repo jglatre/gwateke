@@ -1,5 +1,6 @@
-package com.github.gwateke.ui.form;
+package com.github.gwateke.ui.form.support;
 
+import com.github.gwateke.ui.form.KeyboardFilter;
 import com.google.gwt.user.client.ui.HasValue;
 
 

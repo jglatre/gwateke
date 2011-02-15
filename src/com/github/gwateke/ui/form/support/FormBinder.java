@@ -1,4 +1,4 @@
-package com.github.gwateke.ui.form;
+package com.github.gwateke.ui.form.support;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +17,7 @@ import com.github.gwateke.binding.form.FormModel;
 import com.github.gwateke.model.list.ListModel;
 import com.github.gwateke.model.list.ListModelResolver;
 import com.github.gwateke.ui.RadioButtonGroup;
+import com.github.gwateke.ui.form.FieldVisitor;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasName;

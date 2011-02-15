@@ -1,4 +1,4 @@
-package com.github.gwateke.ui.form;
+package com.github.gwateke.ui.form.support;
 
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.i18n.client.constants.NumberConstants;
