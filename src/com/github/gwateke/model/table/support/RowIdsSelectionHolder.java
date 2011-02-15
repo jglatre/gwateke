@@ -19,7 +19,7 @@ import com.github.gwateke.model.table.TableSelectionModel;
 /**
  * @author juanjogarcia
  *
- * @param <T> tipo de identificador.
+ * @param <T> identity field type.
  */
 public class RowIdsSelectionHolder<T> implements TableSelectionModel<T> {
 	
@@ -39,7 +39,7 @@ public class RowIdsSelectionHolder<T> implements TableSelectionModel<T> {
 	
 	
 	/**
-	 * @return los identificadores seleccionados.
+	 * @return a collection of selected identifiers.
 	 */
 	public Collection<T> getSelectedIds() {
 		return selectedIds.values();
@@ -47,13 +47,16 @@ public class RowIdsSelectionHolder<T> implements TableSelectionModel<T> {
 
 
 	/**
-	 * @return número de filas seleccionadas.
+	 * @return number of selected rows.
 	 */
 	public int getSelectedRowCount() {
 		return selectedIds.size();
 	}
 	
 	
+	/**
+	 * @see com.github.gwateke.model.table.TableSelectionModel#clearSelection()
+	 */
 	public void clearSelection() {
 		if (!selectedIds.isEmpty()) {
 			final int min = Collections.min(selectedIds.keySet());
@@ -97,7 +100,7 @@ public class RowIdsSelectionHolder<T> implements TableSelectionModel<T> {
 	
 	/**
 	 * @param row absolute position of a row.
-	 * @return wether the specified row is selected.
+	 * @return whether the specified row is selected.
 	 */
 	public boolean isSelected(int row) {
 		return selectedIds.containsKey(row);
