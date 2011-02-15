@@ -2,8 +2,8 @@ package com.github.gwateke.ui.table;
 
 import java.util.MissingResourceException;
 
-import com.github.gwateke.context.Images;
 import com.github.gwateke.context.MessageSource;
+import com.github.gwateke.context.UiContext;
 import com.github.gwateke.model.table.TableColumn;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
@@ -31,12 +31,13 @@ public class ColumnHeader extends HorizontalPanel implements HasValueChangeHandl
 	private MouseHighlighter mouseListener = new MouseHighlighter();
 	
 	
-	public ColumnHeader(TableColumn column, MessageSource messageSource, Images images) {
-		setStylePrimaryName("lotura-ColumnHeader");
+	public ColumnHeader(TableColumn column, UiContext uiContext) {
+		setStylePrimaryName("gwateke-ColumnHeader");
 		setVerticalAlignment(ALIGN_MIDDLE);
 		
 		this.orderBy = column.getOrderBy();
 
+		MessageSource messageSource = uiContext.getMessageSource();
 		try {
 			label.setText( messageSource.getRequiredMessage( column.getId() + ".short" ) );
 			label.setTitle( messageSource.getMessage( column.getId() ) );
@@ -48,8 +49,8 @@ public class ColumnHeader extends HorizontalPanel implements HasValueChangeHandl
 
 		setSortable( column.isSortable() );
 
-		ascending = images.downArrow().createImage();
-		descending = images.upArrow().createImage();			
+		ascending = new Image( uiContext.getImageSource().downArrow() );
+		descending = new Image( uiContext.getImageSource().upArrow() );			
 				
 		add(label);
 	}
