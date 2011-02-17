@@ -5,8 +5,9 @@ import java.util.Arrays;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.github.gwateke.context.Images;
+import com.github.gwateke.context.ImageSource;
 import com.github.gwateke.context.MessageSource;
+import com.github.gwateke.context.UiContext;
 import com.github.gwateke.model.table.TableModel;
 import com.github.gwateke.model.table.event.TableModelListener;
 import com.github.gwateke.model.table.support.RowIdsSelectionHolder;
@@ -16,6 +17,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -41,18 +43,19 @@ public class PagingBar extends Toolbar implements ClickHandler, TableModelListen
 	private boolean changing = false;
 	
 	
-	public PagingBar(MessageSource messageSource, Images images) {
+	public PagingBar(UiContext uiContext) {
 		super();
 		setStyleName("toolbar");
 
-		this.messageSource = messageSource;
+		this.messageSource = uiContext.getMessageSource();
 		
 		currentPage.setText( messageSource.getMessage("paging.current") );
 		
-		firstPage = new ToolbarButton(images.first());
-		prevPage = new ToolbarButton(images.previous());
-		nextPage = new ToolbarButton(images.next());
-		lastPage = new ToolbarButton(images.last());
+		ImageSource images = uiContext.getImageSource();
+		firstPage = new ToolbarButton( AbstractImagePrototype.create(images.first()) );
+		prevPage = new ToolbarButton( AbstractImagePrototype.create(images.previous()) );
+		nextPage = new ToolbarButton( AbstractImagePrototype.create(images.next()) );
+		lastPage = new ToolbarButton( AbstractImagePrototype.create(images.last()) );
 		
 		firstPage.setTitle( messageSource.getMessage("paging.first") );
 		prevPage.setTitle( messageSource.getMessage("paging.previous") );
