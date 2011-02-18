@@ -9,6 +9,9 @@
 	<entry-point class='com.github.gwateke.client.AllTests'/>
 
 	<source path='client'/>
+	<source path='command'/>
+	<source path='data'/>
+	<source path='model'/>
 
 	<generate-with class="gwtunit.rebind.TestGenerator">
 		<when-type-assignable class="junit.framework.TestCase" />
