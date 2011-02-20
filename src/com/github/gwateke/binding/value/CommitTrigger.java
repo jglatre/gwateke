@@ -15,9 +15,12 @@
  */
 package com.github.gwateke.binding.value;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import com.github.gwateke.binding.value.event.CommitEvent;
+import com.github.gwateke.binding.value.event.CommitTriggerEvent;
+import com.github.gwateke.binding.value.event.CommitTriggerHandler;
+import com.github.gwateke.binding.value.event.RevertEvent;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 
 /**
@@ -25,53 +28,44 @@ import java.util.List;
  * intended to be used to trigger flush/revert in <code>BufferedValueModel</code>
  * but is useful in general.
  *  
- * @author Keith Donald
- * @author Oliver Hutchison
  */
 public class CommitTrigger {
   
-	private List<CommitTriggerListener> listeners = new ArrayList<CommitTriggerListener>();
+	private HandlerManager handlerManager;
 
+	
     /**
      * Constructs a <code>CommitTrigger</code>. 
      */
     public CommitTrigger() {
+    	handlerManager = new HandlerManager(this);
     }
 
+    
     /**
      * Triggers a commit event.
      */
     public void commit() {
-        for (Iterator<CommitTriggerListener> i = listeners.iterator(); i.hasNext();) {
-            i.next().commit();            
-        }
+    	handlerManager.fireEvent( new CommitEvent() );
     }
 
+    
     /**
      * Triggers a revert event.
      */
     public void revert() {
-        for (Iterator<CommitTriggerListener> i = listeners.iterator(); i.hasNext();) {
-            i.next().revert();           
-        }
+    	handlerManager.fireEvent( new RevertEvent() );
     }
     
     
     /**
      * Adds the provided listener to the list of listeners that will be notified whenever
      * a commit or revert event is fired.
-     * @param listener the <code>CommitTriggerListener</code> to add
+     * @param listener the <code>CommitTriggerHandler</code> to add
+     * @return 
      */
-    public void addCommitTriggerListener(CommitTriggerListener listener) {
-        listeners.add(listener);
+    public HandlerRegistration addCommitTriggerHandler(CommitTriggerHandler handler) {
+    	return handlerManager.addHandler( CommitTriggerEvent.TYPE, handler );
     }
     
-    /**
-     * Removed the provided listener to the list of listeners that will be notified whenever
-     * a commit or revert event is fired.
-     * @param listener the <code>CommitTriggerListener</code> to remove
-     */
-    public void removeCommitTriggerListener(CommitTriggerListener listener) {
-        listeners.remove(listener);
-    }
 }
