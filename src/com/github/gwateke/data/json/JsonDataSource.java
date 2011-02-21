@@ -8,14 +8,16 @@ import java.util.Collections;
 import java.util.List;
 
 import com.github.gwateke.core.closure.Closure;
+import com.github.gwateke.data.DataError;
 import com.github.gwateke.data.DataSource;
+import com.github.gwateke.data.PropertyAccessor;
 import com.github.gwateke.data.query.Comparison;
 import com.github.gwateke.data.query.Conjunction;
 import com.github.gwateke.data.query.Criterion;
 import com.github.gwateke.data.query.Order;
 import com.github.gwateke.data.query.Properties;
 import com.github.gwateke.data.query.Query;
-import com.github.gwateke.ui.list.model.ListModel;
+import com.github.gwateke.model.list.ListModel;
 import com.github.gwateke.util.JSONUtil;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -29,7 +31,9 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
 
-public class JsonDataSource implements DataSource<JSONObject, JSONString, JSONObject> {
+public class JsonDataSource implements DataSource<JSONObject, JSONString> {
+
+	private static final JSONString NULL_ID = new JSONString("");
 
 	private final String url;
 	private final Closure<?, Throwable> errorHandler;
@@ -52,6 +56,16 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString, JSONOb
 		return domainClassName;
 	}
 	
+	
+	public JSONString getNullId() {
+		return NULL_ID;
+	}
+	
+	
+	public PropertyAccessor<JSONObject, JSONString> getPropertyAccessor(JSONObject entity) {
+		return new JsonPropertyAccessor( entity );
+	}
+	
 
 	public ListModel<?, ?> createListModel(String detailType) {
 		// TODO Auto-generated method stub
@@ -59,19 +73,17 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString, JSONOb
 	}
 	
 
-	public void save(JSONObject entity, FallibleCallback<?, List<JSONObject>> callback) {
+	public void save(JSONObject entity, Callback<?> callback) {
 		// TODO Auto-generated method stub
 	}
 
 
-	public void delete(JSONString[] ids, final FallibleCallback<?, List<JSONObject>> callback) {
+	public void delete(JSONString[] ids, final Callback<?> callback) {
 		invoke("delete", ids, null, callback);
 	}
 	
 
-	public <R> void invoke(String method, JSONString[] ids,	List<Object> args,
-			final FallibleCallback<R, List<JSONObject>> callback) {
-		
+	public <R> void invoke(String method, JSONString[] ids,	List<Object> args, Callback<R> callback) {
 		// TODO se tendría que cambiar el parametro "ids" por un Query, de momento se hace la conversión
 		Query query = new Query( new Comparison.In<JSONString>("id", Arrays.asList(ids)) );
 
@@ -85,7 +97,7 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString, JSONOb
 		request.setCallback( new DefaultRequestCallback() {
 			public void onResponseReceived(Request request, Response response) {
 				JSONArray array = JSONParser.parse( response.getText() ).isArray();
-				callback.onSuccess( arrayToList(array) );
+//				callback.onSuccess( array, null );
 			}
 		});
 		doSend(request);
@@ -100,7 +112,7 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString, JSONOb
 		request.setCallback( new DefaultRequestCallback() {
 			public void onResponseReceived(Request request, Response response) {
 				JSONValue value = JSONParser.parse( response.getText() );
-				callback.onSuccess( value.isObject() );
+				callback.onSuccess( value.isObject(), null );
 			}
 		});
 		doSend(request);
@@ -114,15 +126,14 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString, JSONOb
 			public void onResponseReceived(Request request, Response response) {
 				JSONValue value = JSONParser.parse( response.getText() );
 				double count = value.isArray().get(0).isNumber().doubleValue();
-				callback.onSuccess( Double.valueOf(count).intValue() );
+				callback.onSuccess( Double.valueOf(count).intValue(), null );
 			}
 		});
 		doSend(request);
 	}
 
 
-	public <R> void invoke(String method, Query query, List<Object> args,
-			final FallibleCallback<R, List<JSONObject>> callback) {
+	public <R> void invoke(String method, Query query, List<Object> args,final Callback<R> callback) {
 
 		RequestBuilder request = new RequestBuilder( POST, url + "/" + method );
 		request.setRequestData( toJson(query).toString() );
@@ -131,13 +142,13 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString, JSONOb
 			public void onResponseReceived(Request request, Response response) {
 				JSONValue result = JSONParser.parse( response.getText() );
 				if (result != null && result.isObject() != null) {
-					callback.onSuccess( (R) result.isObject() );
+					callback.onSuccess( (R) result.isObject(), null );
 				}
 				else if (result != null && result.isArray() != null) {
-					callback.onFailure( arrayToList(result.isArray()) );
+					callback.onSuccess( null, decodeErrors(result.isArray()) );
 				}
 				else {
-					callback.onFailure( Collections.<JSONObject>emptyList() );
+					callback.onSuccess( null, Collections.<DataError>emptyList() );
 				}
 			}
 		});
@@ -201,6 +212,19 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString, JSONOb
 		json.put( field, JSONUtil.toJsonValue(value) );
 	}
 	
+	
+	private static List<DataError> decodeErrors(JSONArray array) {
+		List<DataError> result = new ArrayList<DataError>();
+		for (int i = 0; i < array.size(); i++) {
+			JSONObject object = array.get(i).isObject();
+			String field = object.get("field").isString().stringValue();
+			List<String> codes = JSONUtil.toJavaList( object.get("codes").isArray() );
+			List<?> arguments = JSONUtil.toJavaList( object.get("arguments").isArray() );
+			result.add( new DataError( field, codes, arguments ) );
+		}
+		return result;
+	}
+
 	//----------------------------------------------------------------------------------------------
 	
 /*	protected String toUrl(Query query) {
@@ -265,13 +289,4 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString, JSONOb
 		return URL.encodeComponent( decodedValue );
 	}*/
 	
-	
-	private static List<JSONObject> arrayToList(JSONArray array) {
-		List<JSONObject> result = new ArrayList<JSONObject>();
-		for (int i = 0; i < array.size(); i++) {
-			result.add( array.get(i).isObject() );
-		}
-		return result;
-	}
-
 }
