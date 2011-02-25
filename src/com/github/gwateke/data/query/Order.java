@@ -1,10 +1,8 @@
 package com.github.gwateke.data.query;
 
-import java.util.HashMap;
-import java.util.Map;
 
 
-public class Order {
+public class Order implements QueryElement {
 
 	public static final String FIELD = "field";
 	public static final String ASC = "asc";
@@ -44,15 +42,12 @@ public class Order {
 	}
 	
 	
-	public Map<?,?> toMap() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(FIELD, field);
-		map.put(ASC, ascending);
-		return map;
-	}
-
-	
 	public String toString() {
 		return getField() + ' ' + (isAscending() ? "asc" : "desc");
+	}
+
+
+	public <R> R accept(QueryVisitor<R> visitor) {
+		return visitor.visit(this);
 	}
 }

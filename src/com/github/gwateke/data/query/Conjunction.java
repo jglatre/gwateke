@@ -1,16 +1,12 @@
 package com.github.gwateke.data.query;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 
 public class Conjunction implements Criterion, Iterable<Criterion> {
 
-	public static final String CRITERIA = "criteria";
-	
 	public static final String AND = "and";
 	public static final String OR = "or";
 	
@@ -51,6 +47,11 @@ public class Conjunction implements Criterion, Iterable<Criterion> {
 	}
 	
 	
+	public <R> R accept(QueryVisitor<R> visitor) {
+		return visitor.visit(this);
+	}
+	
+	
 	public String toString() {
 		String separator = ' ' + getOperator() + ' ';
 		String result = "(";
@@ -80,14 +81,6 @@ public class Conjunction implements Criterion, Iterable<Criterion> {
 	}
 	
 	
-	public Map<?,?> toMap() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(OPERATOR, operator);
-		map.put(CRITERIA, criteriaToMapList(criteria));
-		return map;
-	}
-	
-	
 	public static class And extends Conjunction {
 		public And(Criterion... criteria) {
 			super(AND, criteria);
@@ -100,14 +93,5 @@ public class Conjunction implements Criterion, Iterable<Criterion> {
 			super(OR, criteria);
 		}
 	}	
-	
-	
-	private static List<Map<?,?>> criteriaToMapList(List<Criterion> criteria) {
-		List<Map<?,?>> mapList = new ArrayList<Map<?,?>>();
-		for (Criterion criterion: criteria) {
-			mapList.add( criterion.toMap() );
-		}		
-		return mapList;
-	}
 
 }

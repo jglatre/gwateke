@@ -1,22 +1,14 @@
 package com.github.gwateke.data.query;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.github.gwateke.data.query.Conjunction.And;
 
 
-
-
-public class Query {
-
-	public static String WHERE = "where";
-	public static String ORDER_BY = "orderBy";
-	public static String OFFSET = "offset";
-	public static String LIMIT = "limit";
+public class Query implements QueryElement {
 	
+	private PropertySet properties;
 	private Criterion where;
 	private List<Order> orderBy = new ArrayList<Order>();
 	private int offset = -1;
@@ -36,6 +28,11 @@ public class Query {
 	public Query(Order order) {
 		this();
 		addOrderBy(order);
+	}
+	
+	
+	public PropertySet getProperties() {
+		return properties;
 	}
 	
 	
@@ -103,29 +100,34 @@ public class Query {
 	}
 	
 	
-	public Map<String, ?> toMap() {
-		Map<String,Object> map = new HashMap<String, Object>();
-		if (where != null) {
-			map.put(WHERE, where.toMap());
-		}
-		if (!orderBy.isEmpty()) {
-			map.put(ORDER_BY, ordersToMapList(orderBy));
-		}
-		if (offset != -1) {
-			map.put(OFFSET, offset);
-		}
-		if (limit != -1) {
-			map.put(LIMIT, limit);
-		}
-		return map;
+	public <R> R accept(QueryVisitor<R> visitor) {
+		return visitor.visit(this);
 	}
+	
+	
+//	public Map<String, ?> toMap() {
+//		Map<String,Object> map = new HashMap<String, Object>();
+//		if (where != null) {
+//			map.put(WHERE, where.toMap());
+//		}
+//		if (!orderBy.isEmpty()) {
+//			map.put(ORDER_BY, ordersToMapList(orderBy));
+//		}
+//		if (offset != -1) {
+//			map.put(OFFSET, offset);
+//		}
+//		if (limit != -1) {
+//			map.put(LIMIT, limit);
+//		}
+//		return map;
+//	}
 		
 	
-	private static List<Map<?,?>> ordersToMapList(List<Order> orders) {
-		List<Map<?,?>> mapList = new ArrayList<Map<?,?>>();
-		for (Order order: orders) {
-			mapList.add(order.toMap());
-		}		
-		return mapList;
-	}
+//	private static List<Map<?,?>> ordersToMapList(List<Order> orders) {
+//		List<Map<?,?>> mapList = new ArrayList<Map<?,?>>();
+//		for (Order order: orders) {
+//			mapList.add(order.toMap());
+//		}		
+//		return mapList;
+//	}
 }

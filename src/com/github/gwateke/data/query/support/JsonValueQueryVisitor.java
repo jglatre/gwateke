@@ -2,6 +2,7 @@ package com.github.gwateke.data.query.support;
 
 import com.github.gwateke.data.query.Comparison;
 import com.github.gwateke.data.query.Conjunction;
+import com.github.gwateke.data.query.Order;
 import com.github.gwateke.data.query.Property;
 import com.github.gwateke.data.query.PropertySet;
 import com.github.gwateke.data.query.Query;
@@ -31,16 +32,16 @@ public class JsonValueQueryVisitor implements QueryVisitor<JSONValue> {
 	public JSONValue visit(Query query) {
 		JSONObject o = new JSONObject();
 		if (query.getProperties() != null) {
-			o.put(PROPERTIES, query.getProperties().accept(this));
+			o.put( PROPERTIES, query.getProperties().accept(this) );
 		}
 		if (query.getWhere() != null) {
 			o.put( WHERE, query.getWhere().accept(this) );
 		}
 		if (query.getOffset() != -1) {
-			o.put(OFFSET, new JSONNumber(query.getOffset()));
+			o.put( OFFSET, new JSONNumber(query.getOffset()) );
 		}
 		if (query.getLimit() != -1) {
-			o.put(LIMIT, new JSONNumber(query.getLimit()));
+			o.put( LIMIT, new JSONNumber(query.getLimit()) );
 		}
 		return o;
 	}
@@ -69,6 +70,12 @@ public class JsonValueQueryVisitor implements QueryVisitor<JSONValue> {
 		o.put( "type", new JSONString( property.getType() ) );
 		o.put( "subproperties", property.getSubproperties().accept(this) );
 		return o;
+	}
+
+
+	public JSONValue visit(Order order) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

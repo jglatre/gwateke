@@ -1,14 +1,9 @@
 package com.github.gwateke.data.query;
 
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class Comparison<T> implements Criterion {
 
-	public static final String FIELD = "field";
-	public static final String VALUE = "value";
-	
 	public static final String EQUALS = "eq";
 	public static final String NOT_EQUALS = "neq";
 	public static final String LIKE = "like";
@@ -53,13 +48,9 @@ public class Comparison<T> implements Criterion {
 		return new Comparison<T>(this.operator, this.propertyName, this.value);
 	}
 	
-	
-	public Map<?,?> toMap() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(OPERATOR, operator);
-		map.put(FIELD, propertyName);
-		map.put(VALUE, value);
-		return map;
+
+	public <R> R accept(QueryVisitor<R> visitor) {
+		return visitor.visit(this);
 	}
 	
 	

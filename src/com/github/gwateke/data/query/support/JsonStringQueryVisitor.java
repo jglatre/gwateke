@@ -2,6 +2,7 @@ package com.github.gwateke.data.query.support;
 
 import com.github.gwateke.data.query.Comparison;
 import com.github.gwateke.data.query.Conjunction;
+import com.github.gwateke.data.query.Order;
 import com.github.gwateke.data.query.Property;
 import com.github.gwateke.data.query.PropertySet;
 import com.github.gwateke.data.query.Query;
@@ -35,6 +36,12 @@ public class JsonStringQueryVisitor implements QueryVisitor<String> {
 
 	public String visit(PropertySet propertySet) {
 		return propertySet.accept(jsonValueVisitor).toString();
+	}
+
+
+	public String visit(Order order) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

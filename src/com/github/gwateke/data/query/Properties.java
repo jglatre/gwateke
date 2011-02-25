@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 
+@Deprecated
 public class Properties implements Iterable<Map<String,?>> {
 	
 	public static final String NAME = "name";

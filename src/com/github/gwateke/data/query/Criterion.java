@@ -1,11 +1,15 @@
 package com.github.gwateke.data.query;
 
-import java.util.Map;
 
 
-public interface Criterion {
-	public static final String OPERATOR = "op";
+public interface Criterion extends QueryElement {
 	
-	Map<?,?> toMap();
+//	public static final String OPERATOR = "op";
+	
+//	@Deprecated
+//	Map<?,?> toMap();
+	
+//	JSONValue toJson();
+	
 	<T extends Criterion> T clone();
 }
