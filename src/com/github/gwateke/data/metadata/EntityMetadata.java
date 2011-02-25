@@ -1,14 +1,17 @@
 package com.github.gwateke.data.metadata;
 
+import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.github.gwateke.binding.PropertyMetadataAccessStrategy;
+import com.github.gwateke.util.JSONUtil;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 
 
 public final class EntityMetadata extends JavaScriptObject implements Iterable<FieldMetadata>, PropertyMetadataAccessStrategy {
@@ -16,8 +19,23 @@ public final class EntityMetadata extends JavaScriptObject implements Iterable<F
 	protected EntityMetadata() {}
 	
 	
+	public static native EntityMetadata fromJson(String json) /*-{
+		return eval('(' + json + ')');
+	}-*/;
+
+	
 	public List<String> getAllowedActions() {
-		return null; //getActions().
+		return new AbstractList<String>() {
+			private JsArrayString array = getActions();
+			@Override
+			public String get(int index) {
+				return array.get(index);
+			}
+			@Override
+			public int size() {
+				return array.length();
+			}
+		};
 	}
 	
 	
@@ -30,15 +48,6 @@ public final class EntityMetadata extends JavaScriptObject implements Iterable<F
 		return this.fields[ fieldName ];
 	}-*/;
 	
-	
-	private native JsArray<?> getActions() /*-{
-		return this.actions;
-	}-*/;
-	
-	private native JavaScriptObject getFields() /*-{
-		return this.fields;
-	}-*/;
-
 
 	public Iterator<FieldMetadata> iterator() {
 		return new Iterator<FieldMetadata>() {
@@ -58,31 +67,42 @@ public final class EntityMetadata extends JavaScriptObject implements Iterable<F
 
 
 	public Map<String, ?> getAllUserMetadata(String propertyName) {
-		// TODO Auto-generated method stub
-		return null;
+		return JSONUtil.toJavaMap( new JSONObject( getField(propertyName) ) );
 	}
 
 
 	public String getPropertyType(String propertyName) {
-		// TODO Auto-generated method stub
-		return null;
+		return getFieldMetadata(propertyName).getType();
 	}
 
 
 	public Object getUserMetadata(String propertyName, String key) {
-		// TODO Auto-generated method stub
-		return null;
+		JSONValue value = new JSONObject( getField(propertyName) ).get(key);
+		return JSONUtil.toJavaValue(value);
 	}
 
 
 	public boolean isReadable(String propertyName) {
-		// TODO Auto-generated method stub
-		return false;
+		return getField(propertyName) != null;
 	}
 
 
 	public boolean isWriteable(String propertyName) {
-		// TODO Auto-generated method stub
-		return false;
+		return getField(propertyName) != null;
 	}
+
+	//--------------------------------------------------------------------
+	
+	private native JsArrayString getActions() /*-{
+		return this.actions;
+	}-*/;
+	
+	private native JavaScriptObject getFields() /*-{
+		return this.fields;
+	}-*/;
+	
+	private native JavaScriptObject getField(String fieldName) /*-{
+		return this.fields[ fieldName ];
+	}-*/;
+
 }
