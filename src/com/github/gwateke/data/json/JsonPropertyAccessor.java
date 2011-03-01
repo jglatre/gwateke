@@ -2,10 +2,9 @@ package com.github.gwateke.data.json;
 
 import com.github.gwateke.data.PropertyAccessor;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 
 
-public class JsonPropertyAccessor implements PropertyAccessor<JSONObject, JSONString> {
+public class JsonPropertyAccessor implements PropertyAccessor<JSONObject, Long> {
 
 	private final JSONObject object;
 	
@@ -15,8 +14,8 @@ public class JsonPropertyAccessor implements PropertyAccessor<JSONObject, JSONSt
 	}
 	
 	
-	public JSONString getId() {
-		return object.get("id").isString();
+	public Long getId() {
+		return Double.valueOf( object.get("id").isNumber().doubleValue() ).longValue();
 	}
 
 	

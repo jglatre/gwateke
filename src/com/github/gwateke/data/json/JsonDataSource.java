@@ -1,5 +1,6 @@
 package com.github.gwateke.data.json;
 
+import static com.google.gwt.http.client.RequestBuilder.GET;
 import static com.google.gwt.http.client.RequestBuilder.POST;
 
 import java.util.ArrayList;
@@ -31,9 +32,9 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
 
-public class JsonDataSource implements DataSource<JSONObject, JSONString> {
+public class JsonDataSource implements DataSource<JSONObject, Long> {
 
-	private static final JSONString NULL_ID = new JSONString("");
+	private static final Long NULL_ID = -1L; // new JSONString("");
 
 	private final String url;
 	private final Closure<?, Throwable> errorHandler;
@@ -57,12 +58,12 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString> {
 	}
 	
 	
-	public JSONString getNullId() {
+	public Long getNullId() {
 		return NULL_ID;
 	}
 	
 	
-	public PropertyAccessor<JSONObject, JSONString> getPropertyAccessor(JSONObject entity) {
+	public PropertyAccessor<JSONObject, Long> getPropertyAccessor(JSONObject entity) {
 		return new JsonPropertyAccessor( entity );
 	}
 	
@@ -78,14 +79,14 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString> {
 	}
 
 
-	public void delete(JSONString[] ids, final Callback<?> callback) {
+	public void delete(Long[] ids, final Callback<?> callback) {
 		invoke("delete", ids, null, callback);
 	}
 	
 
-	public <R> void invoke(String method, JSONString[] ids,	List<Object> args, Callback<R> callback) {
+	public <R> void invoke(String method, Long[] ids,	List<Object> args, Callback<R> callback) {
 		// TODO se tendría que cambiar el parametro "ids" por un Query, de momento se hace la conversión
-		Query query = new Query( new Comparison.In<JSONString>("id", Arrays.asList(ids)) );
+		Query query = new Query( new Comparison.In<Long>("id", Arrays.asList(ids)) );
 
 		invoke(method, query, args, callback);
 	}
@@ -96,7 +97,7 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString> {
 		request.setRequestData( toJson(query).toString() );
 		request.setCallback( new DefaultRequestCallback() {
 			public void onResponseReceived(Request request, Response response) {
-				JSONArray array = JSONParser.parse( response.getText() ).isArray();
+				JSONArray array = JSONParser.parseStrict( response.getText() ).isArray();
 //				callback.onSuccess( array, null );
 			}
 		});
@@ -104,14 +105,13 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString> {
 	}
 
 	
-	public void load(JSONString id, Properties properties, final Callback<JSONObject> callback) {
-		Query query = new Query( new Comparison.Equals<JSONString>("id", id) );
-		
-		RequestBuilder request = new RequestBuilder( POST, url );
-		request.setRequestData( toJson(query).toString() );
+	public void load(Long id, Properties properties, final Callback<JSONObject> callback) {
+		String query = url + "/" + domainClassName + "/" + id.toString();
+		RequestBuilder request = new RequestBuilder( GET, query );
+		request.setHeader("Accept", "application/json");
 		request.setCallback( new DefaultRequestCallback() {
 			public void onResponseReceived(Request request, Response response) {
-				JSONValue value = JSONParser.parse( response.getText() );
+				JSONValue value = JSONParser.parseStrict( response.getText() );
 				callback.onSuccess( value.isObject(), null );
 			}
 		});
@@ -120,8 +120,10 @@ public class JsonDataSource implements DataSource<JSONObject, JSONString> {
 	
 	
 	public void count(Query query, final Callback<Integer> callback) {
-		RequestBuilder request = new RequestBuilder( POST, url + "/count" );
-		request.setRequestData( toJson(query).toString() );
+		String q = url + "/" + domainClassName + "/count";
+		RequestBuilder request = new RequestBuilder( GET, q );
+		request.setHeader("Accept", "application/json");
+//		request.setRequestData( toJson(query).toString() );
 		request.setCallback( new DefaultRequestCallback() {
 			public void onResponseReceived(Request request, Response response) {
 				JSONValue value = JSONParser.parse( response.getText() );
