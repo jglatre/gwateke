@@ -33,8 +33,8 @@ public class DefaultFieldFactory implements FieldFactory {
 
 		final Boolean association = field.getUserMetadata("association");
 		if (association != null && association) {
-			boolean manyToOne = field.getUserMetadata("manyToOne");
-			boolean oneToOne = field.getUserMetadata("oneToOne");
+			Boolean manyToOne = field.getUserMetadata("manyToOne");
+			Boolean oneToOne = field.getUserMetadata("oneToOne");
 			if (manyToOne || oneToOne) {
 				return new ListBox();
 			}
