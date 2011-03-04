@@ -19,6 +19,11 @@ public class Query implements QueryElement {
 	}
 	
 	
+	public Query(PropertySet properties) {
+		this.properties = properties;
+	}
+	
+	
 	public Query(Criterion where) {
 		this();
 		addCriterion(where);
