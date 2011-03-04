@@ -9,6 +9,7 @@
     <source path='context'/>
     <source path='core'/>
     <source path='data'/>
+    <source path='model'/>
     <source path='text'/>
     <source path='ui'/>
     <source path='util'/>
